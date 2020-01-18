@@ -14,7 +14,7 @@ class ListGenerator:
   def __iter__(self):
     return self
 
-  def __init__(self, data_list):
+  def __init__(self, data):
 
     self.lock = threading.Lock()
 
@@ -22,7 +22,10 @@ class ListGenerator:
 
     self.data_path = config.data_path
 
-    self.all_samples = np.loadtxt(data_list, str, delimiter=', ')
+    self.data_vid = data
+
+    #self.all_samples = np.loadtxt(data_list, str, delimiter=', ')
+    self.all_samples = np.array(["", ""])
     if self.all_samples.ndim == 1:
       self.all_samples = self.all_samples[None,:] # only one sample, expand batch dim
     assert self.all_samples.size > 0, "No samples found, please check the paths"
@@ -51,7 +54,7 @@ class ListGenerator:
       with self.lock:
         vid, label = self.all_samples[self.v_idx]
         self.v_idx += 1
-      frames = load_video_frames( os.path.join(self.data_path, vid),
+      frames = load_video_frames( self.data_vid,
                                   maxlen=config.maxlen,
                                   pad_mode=config.pad_mode,
                                   grayscale=config.img_channels == 1

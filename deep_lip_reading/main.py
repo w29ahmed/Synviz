@@ -8,7 +8,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.utils import Progbar
 
-from config import load_args
+from config import load_args, Config
 from data.list_generator import ListGenerator
 from language_model.char_rnn_lm import CharRnnLmWrapperSingleton
 from lip_model.training_graph import TransformerTrainGraph
@@ -21,12 +21,12 @@ graph_dict = {
               'infer': TransformerInferenceGraph,
               }
 
-def evaluate_model():
+def evaluate_model(input_video):
 
     np.random.seed(config.seed)
     tf.set_random_seed(config.seed)
 
-    val_g, val_epoch_size, chars, sess, val_gen = init_models_and_data(istrain=0)
+    val_g, val_epoch_size, chars, sess, val_gen = init_models_and_data(istrain=0, input_data=input_video)
 
     tb_writer = None
     if config.tb_eval:
@@ -38,7 +38,7 @@ def evaluate_model():
 
     with sess.as_default():
       for _ in range(config.n_eval_times):
-        val_loss, val_cer, val_wer = validation_loop(sess, val_g,
+        val_loss, val_cer, val_wer, pred = validation_loop(sess, val_g,
                                                         val_epoch_size,
                                                         chars = chars,
                                                         val_gen = val_gen,
@@ -57,15 +57,17 @@ def evaluate_model():
           fw.write(out_str)
 
     print("Done")
+    return pred
 
-def validation_loop(sess, g, n_batches, chars=None, val_gen = None, tb_writer=None):
+def validation_loop(sess, g, n_batches, chars=None, val_gen=None, tb_writer=None):
 
   Loss = []
   Cer = []
   Wer = []
+  Predictions = []
 
   progbar = Progbar(target=n_batches, verbose=1, stateful_metrics=['t'])
-  print ('Strating validation Loop')
+  print ('Starting validation Loop')
 
   for i in range(n_batches):
 
@@ -135,16 +137,17 @@ def validation_loop(sess, g, n_batches, chars=None, val_gen = None, tb_writer=No
 
     progbar.update(i+1, [ ('cer',cer), ('wer', wer) ] )
     Wer.append(wer)
+    Predictions.append(pred_sentences)
 
     Cer.append(cer)
     Loss.append(loss)
 
-  return np.average(Loss), np.average(Cer), np.average(Wer)
+  return np.average(Loss), np.average(Cer), np.average(Wer), Predictions[0]
 
-def init_models_and_data(istrain):
+def init_models_and_data(istrain, input_data):
 
   print ('Loading data generators')
-  val_gen, val_epoch_size = setup_generators()
+  val_gen, val_epoch_size = setup_generators(input_data)
   print ('Done')
 
   os.environ["CUDA_VISIBLE_DEVICES"] = str(config.gpu_id)
@@ -221,8 +224,8 @@ def load_checkpoints(sess, var_scopes = ('encoder', 'decoder', 'dense')):
 
     print("Restored saved model {}!".format(checkpoint))
 
-def setup_generators(verbose=False):
-  val_gen = ListGenerator(data_list=config.data_list)
+def setup_generators(data, verbose=False):
+  val_gen = ListGenerator(data)
   val_epoch_size = val_gen.calc_nbatches_per_epoch()
   return val_gen, val_epoch_size
 

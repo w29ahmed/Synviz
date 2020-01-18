@@ -2,13 +2,13 @@ import av
 import numpy as np
 
 
-def load_video_frames(path, maxlen, pad_mode, grayscale):
+def load_video_frames(vid, maxlen, pad_mode, grayscale):
 
-  if not path.endswith('.mp4') and not path.endswith('.avi'):
-    path+='.mp4'
-  mat = load_mp4(path, grayscale=grayscale)
+  # if not path.endswith('.mp4') and not path.endswith('.avi'):
+  #   path+='.mp4'
+  # mat = load_mp4(path, grayscale=grayscale)
 
-  mat = mat.astype('float')/255.
+  mat = vid.astype('float')/255.
 
   if pad_mode:
     if len(mat) > maxlen:
@@ -29,6 +29,8 @@ def load_mp4(vid_path, grayscale=False):
 
   if grayscale:
     ims_c = np.expand_dims(ims_c,axis=3)
+
+  print(ims_c.shape)
 
   return ims_c
 
