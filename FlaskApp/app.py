@@ -1,72 +1,53 @@
 from flask import Flask, request, redirect
-from google.cloud import storage
-import sys
+from flask_socketio import SocketIO
+# from google.cloud import storage
+from gcp_utils import *
+from datetime import datetime
 
 # Initialize flask app
 app = Flask(__name__)
 
+# Configure socket IO
+# TODO: Make more secure secret key, enables secure client connection
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
+
 # Instantiate Google Cloud client
 storage_client = storage.Client()
 
-def create_bucket_gcp(bucket_name):
-    """Creates a new bucket. Can fail if bucket name is not available"""
-    # bucket_name = "your-bucket-name"
+def gcp_test(storage_client):
+    # Generate unique file name with a timestamp
+    dt_string = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+    bucket_name = "uofthacksvii_test_%s" % dt_string
 
-    storage_client.create_bucket(bucket_name)
-    print("Bucket {} created".format(bucket_name), file = sys.stderr)
+    source_file_name = "python.png"
 
-def upload_file_gcp(bucket_name, source_file_name, destination_blob_name):
-    """Uploads a blob (GCP's name for a file) to the bucket."""
-    # bucket_name = "your-bucket-name"
-    # source_file_name = "local/path/to/file"
-    # destination_blob_name = "storage-object-name"
-
-    bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(destination_blob_name)
-
-    blob.upload_from_filename(source_file_name)
-
-    print("File {} uploaded to {}.".format(source_file_name, destination_blob_name))
-
-def download_file_gcp(bucket_name, source_blob_name, destination_file_name):
-    """Downloads a blob (GCP's name for a file) from the bucket."""
-    # bucket_name = "your-bucket-name"
-    # source_blob_name = "storage-object-name"
-    # destination_file_name = "local/path/to/file"
-
-    bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(source_blob_name)
-    blob.download_to_filename(destination_file_name)
-
-    print("Blob {} downloaded to {}.".format(source_blob_name, destination_file_name))
-
-def list_blobs_gcp(bucket_name):
-    """Lists all the blobs in the bucket."""
-    # bucket_name = "your-bucket-name"
-
-    storage_client = storage.Client()
-
-    # Note: Client.list_blobs requires at least package version 1.17.0.
-    blobs = storage_client.list_blobs(bucket_name)
-
-    for blob in blobs:
-        print(blob.name)
+    # gcp test functions
+    create_bucket(storage_client, bucket_name)
+    upload_blob(storage_client, bucket_name, source_file_name, source_file_name)
+    download_blob(storage_client, bucket_name, source_file_name, "gcp_test.png")
+    list_blobs(storage_client, bucket_name)
+    blob_metadata(storage_client, bucket_name, source_file_name)
 
 # Homepage URL routing
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    # upload_file_gcp("uofthacksvii", "test_img.png", "upload_img2.png")
+    if request.method == 'GET':
+        gcp_test(storage_client)
 
-    filename = request.form['filename']
-    download_file_gcp("uofthacksvii", filename, "request.mp4")
+        try:
+            gcp_test(storage_client)
+            return "Success"
+        except:
+            return "Something went wrong"
+    else:
+        filename = request.form['filename']
 
-    return "Success"
-
-    # if request.method == 'POST':
-    #     list_blobs_gcp("uofthacksvii")
-    #     return redirect('/')
-    # else:
-    #     return "Do you wanna make an app?"
+        try:
+            download_blob(storage_client, "uofthacksvii", filename, filename)
+            return "Success"
+        except:
+            return "Something went wrong"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app)

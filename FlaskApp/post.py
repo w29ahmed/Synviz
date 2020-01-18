@@ -2,7 +2,7 @@ import requests
 
 # NOTE: This url is genereted by ngrok, a local host tunneling service, and thus 
 # this url can change with every execution of the ngrok server
-API_ENDPOINT = "http://3934774e.ngrok.io"
+API_ENDPOINT = "http://17eadbde.ngrok.io"
 
 # data to be sent to api 
 data = {'filename': 'demo.mp4'} 
