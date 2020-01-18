@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, redirect
 from google.cloud import storage
 import sys
 
@@ -53,14 +53,20 @@ def list_blobs_gcp(bucket_name):
         print(blob.name)
 
 # Homepage URL routing
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['POST'])
 def index():
     # upload_file_gcp("uofthacksvii", "test_img.png", "upload_img2.png")
-    # download_file_gcp("uofthacksvii", "demo.mp4", "demo2.mp4")
 
-    list_blobs_gcp("uofthacksvii")
+    filename = request.form['filename']
+    download_file_gcp("uofthacksvii", filename, "request.mp4")
 
-    return "Do you wanna make an app?"
+    return "Success"
+
+    # if request.method == 'POST':
+    #     list_blobs_gcp("uofthacksvii")
+    #     return redirect('/')
+    # else:
+    #     return "Do you wanna make an app?"
 
 if __name__ == "__main__":
     app.run(debug=True)
