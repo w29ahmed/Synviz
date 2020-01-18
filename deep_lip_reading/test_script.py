@@ -1,19 +1,13 @@
 #!/usr/bin/env python
-from __future__ import print_function
 
-import os
-
-import editdistance
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras.utils import Progbar
-
 from main import evaluate_model
 
 import cv2
 
 def load_vid():
-    cap = cv2.VideoCapture('media/example/yeeterson.mp4')
+    #cap = cv2.VideoCapture('media/example/yeeterson.mp4')
+    cap = cv2.VideoCapture('media/example/where_is_the_bathroom.mp4')
 
     frames = []
     
@@ -23,7 +17,13 @@ def load_vid():
         if ret == True:
 
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            gray = gray[100:700, 450:1050]
+            # yeeterson
+            #gray = gray[100:700, 450:1050]
+
+            # bathroom
+            gray = cv2.transpose(gray)
+            gray = gray[550:1050, 325:825]
+
             gray = cv2.resize(gray, (160, 160))
             gray = gray[:, :, np.newaxis]
             frames.append(gray)
@@ -47,9 +47,8 @@ def load_vid():
     #cv2.destroyAllWindows()
 
     np_video = np.stack(frames, axis=0)
+    print(np_video.shape)
     return np_video
-
-
 
 
 if __name__=="__main__":

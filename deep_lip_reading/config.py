@@ -39,8 +39,8 @@ class Config:
     self.sinusoid = True
     self.mask_pads = False
 
-    self.lm_path = None
-    self.beam_size = 0
+    self.lm_path = 'models/lrs2_language_model'
+    self.beam_size = 10
     self.len_alpha = 0.7
     self.lm_alpha = 0.1
     self.top_beams = 1
@@ -50,7 +50,7 @@ class Config:
     self.mean = 0.4161
     self.std = 0.1688
 
-    self.horizontal_flip = True
+    self.horizontal_flip = False
     self.crop_pixels = 0
     self.test_aug_times = 0
     self.n_eval_times = 1 
