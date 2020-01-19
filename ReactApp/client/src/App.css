@@ -1,0 +1,60 @@
+$column-width: 480px;
+$gutter-width: 20px;
+
+.app {
+  margin: 50%;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  text-align: center;
+}
+
+.infoTable1 {
+  margin-top: 3%;
+  color: #4682B6;
+}
+
+.textBlock {
+  float: right;
+  width: 43%;
+  margin-top: 5%;
+  word-wrap: break-word;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.displayText {
+  font-size: 5em;
+  color: #4682B6;
+}
+
+.infoTable2 {
+  color: #4682B6
+}
+
+.section {
+  float: left;
+  width: 50%;
+  max-width: $column-width;
+  margin-top: 1 %;
+  margin-bottom: 10%;
+  margin-left: 7%;
+  text-align: left;
+  vertical-align: top;
+}
+
+.player-wrapper {
+  width: 576px;
+  height: 324px;
+}
+
+.react-player {
+  margin-bottom: 10px;
+  background: rgba(0, 0, 0, .1);
+}
+
+.faded {
+  color: rgba(0, 0, 0, .5);
+}
+
+.footer {
+  margin: $gutter-width;
+}
