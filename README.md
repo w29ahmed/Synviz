@@ -1,4 +1,6 @@
 # Synviz
+![](images/prototype.jpg)
+
 Synviz is a system for in-person lip-reading. It takes video footage from a camera mounted on a pair of glasses, and passes that
 data to a backend that reads the lips of a subject in the video footage.
 
@@ -42,3 +44,10 @@ This system has a few use cases:
 We were inspired to do this hack from a really interesting paper published by University of Oxford researchers.
 We present a use-case for their lip-reading Transformer network. The paper can be found with the following link:
 http://www.robots.ox.ac.uk/~vgg/publications/2018/Afouras18b/afouras18b.pdf
+
+## The Team
+![](images/team_photo.jpg)
+* [Waleed Ahmed](https://github.com/w29ahmed) - Backend (Flask) & Cloud Storage (GCP)
+* [Sinclair Hudson](https://github.com/SinclairHudson) - Hardware (Raspberry Pi) & Computer Vision (OpenCV)
+* [Martin Ethier](https://github.com/MartinEthier) - Deep Learning (TensorFlow)
+* [William Lu](https://github.com/WillyumLu) - Frontend (React)
