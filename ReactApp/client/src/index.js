@@ -1,7 +1,11 @@
 import React from 'react'
 import { render } from 'react-dom'
-import App from './App'
+import Landing from './landing/Landing'
 
 const container = document.getElementById('root')
 
-render(<App />, container)
+localStorage.setItem('loggedIn', "false");
+localStorage.setItem('username', "user");
+localStorage.setItem('pw', "user");
+
+render(<Landing />, container)

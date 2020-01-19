@@ -3,6 +3,7 @@ import { findDOMNode } from 'react-dom'
 import socketIOClient from "socket.io-client";
 import { hot } from 'react-hot-loader'
 import screenfull from 'screenfull'
+import {message, Icon, Upload, Card, Input, Button} from 'antd';
 
 import './reset.css'
 import './defaults.css'
@@ -11,15 +12,17 @@ import './App.css'
 
 import ReactPlayer from 'react-player'
 import Duration from './Duration'
+import Navigation from './navigation/Navigation'
 
 class App extends Component {
   state = {
+    text: "Some Plain, Ordinary Text",
     url: null,
     pip: false,
-    playing: true,
+    playing: false,
     controls: false,
     light: false,
-    volume: 0.8,
+    volume: 1.0,
     muted: false,
     played: 0,
     loaded: 0,
@@ -27,14 +30,26 @@ class App extends Component {
     playbackRate: 1.0,
     loop: false,
     response: false,
-    endpoint: "http://127.0.0.1:5000/"
+    endpoint: "http://17eadbde.ngrok.io/"
+  }
+
+  componentDidUpdate() {
+    console.log("updating state")
+    console.log(this.state)
+  }
+
+  handleSocketRead = data => {
+    this.handleStop();
+    this.setState({ url: data.url, playing: false, text: data.text });
+    this.handlePlayPause();
   }
 
   componentDidMount() {
     console.log("mounting")
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
-    socket.on("FromAPI", data => this.setState({ url: data }));
+    socket.on("FromAPI", this.handleSocketRead);
+    console.log("URL:" + this.state.url)
   }
 
   load = url => {
@@ -45,8 +60,6 @@ class App extends Component {
       pip: false
     })
   }
-
-
 
   handlePlayPause = () => {
     this.setState({ playing: !this.state.playing })
@@ -157,12 +170,12 @@ class App extends Component {
 
   render () {
     const { url, playing, controls, light, volume, muted, loop, played, loaded, duration, playbackRate, pip } = this.state
-    const SEPARATOR = ' · '
 
     return (
       <div className='app'>
+      	<Navigation title = "Navigation"/>
         <section className='section'>
-          <h1>ReactPlayer Demo</h1>
+          <h1 style={{"color": "#4682B6"}}>ReactPlayer Demo</h1>
           <div className='player-wrapper'>
             <ReactPlayer
               ref={this.ref}
@@ -193,7 +206,7 @@ class App extends Component {
             />
           </div>
 
-          <table>
+          <table className="infoTable1">
             <tbody>
               <tr>
                 <th>Controls</th>
@@ -202,26 +215,6 @@ class App extends Component {
                   <button onClick={this.handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
                 </td>
               </tr>
-            </tbody>
-          </table>
-        </section>
-        <section className='section'>
-          <table>
-            <tbody>
-              <tr>
-                <th>Custom URL</th>
-                <td>
-                  <input ref={input => { this.urlInput = input }} type='text' placeholder='Enter URL' />
-                  <button onClick={() => this.setState({ url: this.urlInput.value })}>Load</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h2>State</h2>
-
-          <table>
-            <tbody>
               <tr>
                 <th>url</th>
                 <td className={!url ? 'faded' : ''}>
@@ -256,9 +249,20 @@ class App extends Component {
                 <th>remaining</th>
                 <td><Duration seconds={duration * (1 - played)} /></td>
               </tr>
+              <tr>
+                <th>Custom URL</th>
+                <td>
+                  <input ref={input => { this.urlInput = input }} type='text' placeholder='Enter URL' />
+                  <button onClick={() => this.setState({ url: this.urlInput.value })}>Load</button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </section>
+        <section className="textBlock">
+          <h1 className="displayText">{this.state.text}</h1>
+        </section>
+        
       </div>
     )
   }
