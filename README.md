@@ -1,6 +1,8 @@
 # Synviz
 ![](images/prototype.jpg)
 
+[Devpost submission](https://devpost.com/software/synviz)
+
 Synviz is an IoT device that uses state of the art artificial intelligence to decode text from the movement of a speaker's mouth.
 
 ## Inspiration
