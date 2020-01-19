@@ -1,6 +1,5 @@
-from flask import Flask, request, redirect
-from flask_socketio import SocketIO
-# from google.cloud import storage
+from flask import Flask, request
+from flask_socketio import SocketIO, emit
 from gcp_utils import *
 from datetime import datetime
 
@@ -42,12 +41,27 @@ def index():
             return "Something went wrong"
     else:
         filename = request.form['filename']
+        bucketname = "uofthacksvii"
 
         try:
-            download_blob(storage_client, "uofthacksvii", filename, filename)
+            download_blob(storage_client, bucketname, filename, filename)
+
+            # Lip tracking + model inferenece
+            # output would be a string with the prediction text
+
+            # Construct gcp url so frontend can stream it to webpage
+            gcp_url = "https://storage.cloud.google.com/%s/%s" % (bucketname, filename)
+
+            # Emit the url on the socket - frontend should be listening to this
+            socketio.emit("FromAPI", gcp_url)
+
             return "Success"
         except:
             return "Something went wrong"
+
+@socketio.on('connect')
+def connect():
+    print("Succesfully connected")
 
 if __name__ == "__main__":
     socketio.run(app)
