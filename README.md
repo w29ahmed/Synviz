@@ -11,6 +11,7 @@ There were two primary sources of inspiration. The first one was a paper publish
 The second source of inspiration is an existing product on the market, [Focals by North](https://www.bynorth.com/). Focals are smart glasses that aim to put the important parts of your life right in front of you through a projected heads up display. We thought it would be a great idea to build onto a platform like this through adding a camera and using artificial intelligence to gain valuable insights about what you see, which in our case, is deciphering speech from visual input.
 
 ## Pipeline Overview
+![](images/pipeline.png)
 * The user presses the button on the glasses to start a recording
 * The user clicks the button again to stop recording
 * The data is passed to a Google Cloud Platform bucket as an mp4 file
