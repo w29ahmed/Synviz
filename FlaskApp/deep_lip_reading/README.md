@@ -1,5 +1,7 @@
 # Deep Lip Reading
 
+[Original Repo](https://github.com/afourast/deep_lip_reading)
+
 This repository contains code for evaluating the best performing lip reading model described in the  paper
 [Deep Lip Reading: A comparison of models and an online application](http://www.robots.ox.ac.uk/~vgg/publications/2018/Afouras18b/afouras18b.pdf).
 The model is based on the Transformer architecture.
