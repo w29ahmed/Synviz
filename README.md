@@ -47,7 +47,7 @@ http://www.robots.ox.ac.uk/~vgg/publications/2018/Afouras18b/afouras18b.pdf
 
 ## The Team
 ![](images/team_photo.jpg)
-* [Waleed Ahmed](https://github.com/w29ahmed) - Backend (Flask) & Cloud Storage (GCP)
+* [Waleed Ahmed](https://github.com/w29ahmed) - Backend (Flask) & Cloud (GCP)
 * [Sinclair Hudson](https://github.com/SinclairHudson) - Hardware (Raspberry Pi) & Computer Vision (OpenCV)
 * [Martin Ethier](https://github.com/MartinEthier) - Deep Learning (TensorFlow)
 * [William Lu](https://github.com/WillyumLu) - Frontend (React)
