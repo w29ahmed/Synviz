@@ -1,24 +1,17 @@
-import threading
+import requests
 
-from flask import Flask
-from flask_socketio import SocketIO, emit
+# NOTE: This url is genereted by ngrok, a local host tunneling service, and thus
+# this url can change with every execution of the ngrok server
+API_ENDPOINT = "http://17eadbde.ngrok.io"
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+# data to be sent to api
+data = {'filename': 'bunny.mp4'}
 
-def set_interval(func, event, link, sec):
-    print("Set Interval Running")
-    def func_wrapper():
-        set_interval(func, event, link, sec)
-        func(event, link)
-    t = threading.Timer(sec, func_wrapper)
-    t.start()
-    return t
+# filename = "demo.mp4"
 
-@socketio.on('connection')
-def handle_my_custom_event():
-    set_interval(emit, 'FromAPI', 'https://www.youtube.com/watch?v=_V3StKhHTyw', 10)
+# sending post request and saving response as response object
+r = requests.post(url=API_ENDPOINT, data=data)
 
-if __name__ == '__main__':
-    socketio.run(app)
+# extracting response text
+pastebin_url = r.text
+print("The pastebin URL is: %s" % pastebin_url)
