@@ -52,44 +52,20 @@ def index():
         filename = request.form['filename']
         bucketname = "uofthacksvii"
 
-        # Download .npy file from gcp
         download_blob(storage_client, bucketname, filename, filename)
 
-        # Load data into a numpy array
-        np_array = np.load(filename)
+        # Lip tracking + model inferenece
+        input_array = FaceDetector(filename)
+        print(input_array.shape)
+        prediction = evaluate_model(input_array).replace('-', ' ').capitalize()
 
-        # Remove .npy file locally and remove it from gcp
-        os.remove(filename)
-        delete_blob(storage_client, bucketname, filename)
+        # Construct gcp url so frontend can stream it to webpage
+        gcp_url = "https://storage.cloud.google.com/%s/%s" % (bucketname, filename)
 
-        # Change extension to mp4 and write to disk
-        pre, _ = os.path.splitext(filename)
-        mp4_filename = pre + ".mp4"
+        out_dict = {"url": gcp_url, "text": prediction}
 
-        # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
-        print(np_array.shape)
-        out = cv2.VideoWriter(mp4_filename, cv2.VideoWriter_fourcc(*"H264"), 30, (np_array.shape[2], np_array.shape[1]))
-        for frame in np_array:
-            # Write the frame into the file 'output.avi'
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            out.write(frame)
-        out.release()
-
-        # Upload .mp4 file to gcp
-        upload_blob(storage_client, bucketname, mp4_filename, mp4_filename)
-
-        # # Lip tracking + model inferenece
-        # model_input_array = FaceDetector(np_array)
-        # prediction = evaluate_model(model_input_array).replace('-', ' ').capitalize()
-        # print(prediction)
-
-        # # Construct gcp url so frontend can stream it to webpage
-        # gcp_url = "https://storage.cloud.google.com/%s/%s" % (bucketname, mp4_filename)
-
-        # out_dict = {"url": gcp_url, "text": prediction}
-
-        # # Emit the url on the socket - frontend should be listening to this
-        # socketio.emit("FromAPI", out_dict)
+        # Emit the url on the socket - frontend should be listening to this
+        socketio.emit("FromAPI", out_dict)
 
         return "Success"
 

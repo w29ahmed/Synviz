@@ -5,7 +5,7 @@ import requests
 API_ENDPOINT = "http://17eadbde.ngrok.io"
 
 # data to be sent to api 
-data = {'filename': 'final.npy'}
+data = {'filename': 'final.mp4'}
 
 # filename = "demo.mp4"
   
