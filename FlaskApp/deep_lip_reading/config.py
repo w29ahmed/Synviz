@@ -40,9 +40,9 @@ class Config:
     self.mask_pads = False
 
     self.lm_path = 'deep_lip_reading/models/lrs2_language_model'
-    self.beam_size = 10
+    self.beam_size = 4
     self.len_alpha = 0.7
-    self.lm_alpha = 0.1
+    self.lm_alpha = 0.05
     self.top_beams = 1
 
     self.resize_input = 160
