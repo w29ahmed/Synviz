@@ -2,6 +2,8 @@ from flask import Flask, request
 from flask_socketio import SocketIO, emit
 from gcp_utils import *
 from datetime import datetime
+from deep_lip_reading.main import evaluate_model
+from FaceDetector import FaceDetector
 
 # Initialize flask app
 app = Flask(__name__)
@@ -47,13 +49,16 @@ def index():
             download_blob(storage_client, bucketname, filename, filename)
 
             # Lip tracking + model inferenece
-            # output would be a string with the prediction text
-
+            input_array = FaceDetector(filename)
+            prediction = evaluate_model(input_array).capitalize()
+            
             # Construct gcp url so frontend can stream it to webpage
             gcp_url = "https://storage.cloud.google.com/%s/%s" % (bucketname, filename)
 
+            out_dict = {"url": gcp_url, "text": prediction}
+
             # Emit the url on the socket - frontend should be listening to this
-            socketio.emit("FromAPI", gcp_url)
+            socketio.emit("FromAPI", out_dict)
 
             return "Success"
         except:
