@@ -32,7 +32,7 @@ class Navigation extends React.Component {
         </Menu.Item>
         <Menu.Item key="name" style={{'width': '60%', 'text-align': 'center'}}>
           <Link to={'/'}>
-            <Title level={3} style={{"color": "#4682B6"}}>SynviZ</Title>      
+            <Title level={3} style={{"color": "#4682B6"}}>Synviz</Title>      
           </Link>
         </Menu.Item>
         <Menu.Item key="LOGOUT" style={{'paddingLeft': 20, 'paddingRight': 20}} id="floatRight" onClick={this.logout}>

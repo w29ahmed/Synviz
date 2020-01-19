@@ -14,8 +14,8 @@ $gutter-width: 20px;
 }
 
 .textBlock {
-  display: inline-block;
-  width: 20%;
+  float: right;
+  width: 43%;
   margin-top: 5%;
   word-wrap: break-word;
   font-family: "Times New Roman", Times, serif;
@@ -31,7 +31,8 @@ $gutter-width: 20px;
 }
 
 .section {
-  display: inline-block;
+  float: left;
+  width: 50%;
   max-width: $column-width;
   margin-top: 1 %;
   margin-bottom: 10%;

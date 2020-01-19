@@ -13,6 +13,9 @@ import './App.css'
 import ReactPlayer from 'react-player'
 import Duration from './Duration'
 import Navigation from './navigation/Navigation'
+import { processFile } from './request/serverReq'
+
+var socket = socketIOClient("http://0a8e733d.ngrok.io/");
 
 class App extends Component {
   state = {
@@ -44,10 +47,21 @@ class App extends Component {
     this.handlePlayPause();
   }
 
+  handleSocketWrite = data => {
+    console.log("writing to socket " + data);
+    // const { endpoint } = this.state;
+    // const socket = socketIOClient(endpoint);
+    socket.on('write', function() {
+      socket.emit('write', data);
+    });
+    console.log("complete");
+
+  }
+
   componentDidMount() {
     console.log("mounting")
-    const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
+    // const { endpoint } = this.state;
+    // const socket = socketIOClient(endpoint);
     socket.on("FromAPI", this.handleSocketRead);
     console.log("URL:" + this.state.url)
   }
@@ -175,7 +189,7 @@ class App extends Component {
       <div className='app'>
       	<Navigation title = "Navigation"/>
         <section className='section'>
-          <h1 style={{"color": "#4682B6"}}>ReactPlayer Demo</h1>
+          <h1 style={{"color": "#4682B6"}}>Media Input</h1>
           <div className='player-wrapper'>
             <ReactPlayer
               ref={this.ref}
@@ -260,6 +274,7 @@ class App extends Component {
           </table>
         </section>
         <section className="textBlock">
+          <h1 style={{"color": "#4682B6"}}>AI Output</h1>
           <h1 className="displayText">{this.state.text}</h1>
         </section>
         
