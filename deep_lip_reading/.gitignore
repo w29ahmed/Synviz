@@ -16,6 +16,7 @@ Tools/*.elc
 
 BUILD/
 build/
+models/
 !tests/build/
 dist/
 .gitrev
