@@ -8,11 +8,12 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.utils import Progbar
 
-from config import load_args, Config
-from data.list_generator import ListGenerator
-from language_model.char_rnn_lm import CharRnnLmWrapperSingleton
-from lip_model.training_graph import TransformerTrainGraph
-from lip_model.inference_graph import TransformerInferenceGraph
+# These imports are called from one directory up
+from deep_lip_reading.config import load_args, Config
+from deep_lip_reading.data.list_generator import ListGenerator
+from deep_lip_reading.language_model.char_rnn_lm import CharRnnLmWrapperSingleton
+from deep_lip_reading.lip_model.training_graph import TransformerTrainGraph
+from deep_lip_reading.lip_model.inference_graph import TransformerInferenceGraph
 
 config = load_args()
 
@@ -57,7 +58,7 @@ def evaluate_model(input_video):
           fw.write(out_str)
 
     print("Done")
-    return pred
+    return pred[0]
 
 def validation_loop(sess, g, n_batches, chars=None, val_gen=None, tb_writer=None):
 
@@ -120,7 +121,7 @@ def validation_loop(sess, g, n_batches, chars=None, val_gen=None, tb_writer=None
 
     pred_sentences = [ decode_preds_to_chars(prr) for prr in preds]
 
-    pred_words = [sent.split(' ') for sent in  pred_sentences]
+    pred_words = [sent.split('-') for sent in  pred_sentences]
 
     edists = [rel_edist(gt, dec_str) for gt, dec_str in zip(gt_words, pred_words)]
     wer = np.mean(edists)
@@ -231,11 +232,3 @@ def setup_generators(data, verbose=False):
 
 def rel_edist(tr, pred):
   return editdistance.eval(tr,pred) / float(len(tr))
-
-
-def main():
-  evaluate_model()
-
-if __name__ == '__main__':
-  main()
-

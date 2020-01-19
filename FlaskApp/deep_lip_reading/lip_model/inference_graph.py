@@ -3,13 +3,13 @@ from distutils.version import StrictVersion
 import tensorflow as tf
 from tensorflow.python.util import nest
 
-from config import load_args
-from language_model.char_rnn_lm import CharRnnLm, CharRnnLmWrapperSingleton
-from lip_model import beam_search
-from lip_model.beam_search import log_prob_from_logits
-from lip_model.training_graph import TransformerTrainGraph
-from lip_model.modules import embedding, multihead_attention, feedforward
-from util.tf_util import shape_list
+from deep_lip_reading.config import load_args
+from deep_lip_reading.language_model.char_rnn_lm import CharRnnLm, CharRnnLmWrapperSingleton
+from deep_lip_reading.lip_model import beam_search
+from deep_lip_reading.lip_model.beam_search import log_prob_from_logits
+from deep_lip_reading.lip_model.training_graph import TransformerTrainGraph
+from deep_lip_reading.lip_model.modules import embedding, multihead_attention, feedforward
+from deep_lip_reading.util.tf_util import shape_list
 
 config = load_args()
 

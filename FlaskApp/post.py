@@ -5,7 +5,7 @@ import requests
 API_ENDPOINT = "http://17eadbde.ngrok.io"
 
 # data to be sent to api 
-data = {'filename': 'bunny.mp4'}
+data = {'filename': 'final.npy'}
 
 # filename = "demo.mp4"
   
@@ -14,4 +14,4 @@ r = requests.post(url = API_ENDPOINT, data = data)
   
 # extracting response text  
 pastebin_url = r.text 
-print("The pastebin URL is: %s"%pastebin_url)
+print("The response is: %s"%pastebin_url)

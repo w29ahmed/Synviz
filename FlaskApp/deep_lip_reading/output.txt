@@ -1,0 +1,1 @@
+lm=models/lrs2_language_model, beam=10, bs=1, test_aug:0, horflip False: CER inf, WER 4.000000

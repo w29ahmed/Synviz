@@ -2,12 +2,12 @@ import tensorflow as tf
 from tensorflow.contrib.keras import backend as K
 from tensorflow.contrib.keras.api.keras import layers
 
-from config import load_args
-from lip_model.preproc_and_aug import resize_no_crop, \
+from deep_lip_reading.config import load_args
+from deep_lip_reading.lip_model.preproc_and_aug import resize_no_crop, \
   resize_vids, random_crop_frames, \
   random_hor_flip_frames, normalize_mean_std, replicate_to_batch
-from lip_model.resnet import resnet_18
-from util.tf_util import shape_list, batch_normalization_wrapper
+from deep_lip_reading.lip_model.resnet import resnet_18
+from deep_lip_reading.util.tf_util import shape_list, batch_normalization_wrapper
 
 config = load_args()
 

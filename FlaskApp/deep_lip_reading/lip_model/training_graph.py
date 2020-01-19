@@ -1,12 +1,12 @@
 import tensorflow as tf
 import numpy as np
 
-from config import load_args
-from lip_model.losses import cer
-from lip_model.modules import embedding, sinusoid_encoding, multihead_attention, \
+from deep_lip_reading.config import load_args
+from deep_lip_reading.lip_model.losses import cer
+from deep_lip_reading.lip_model.modules import embedding, sinusoid_encoding, multihead_attention, \
   feedforward, label_smoothing
-from lip_model.visual_frontend import VisualFrontend
-from util.tf_util import shape_list
+from deep_lip_reading.lip_model.visual_frontend import VisualFrontend
+from deep_lip_reading.util.tf_util import shape_list
 
 config = load_args()
 
