@@ -1,49 +1,41 @@
 # Synviz
 ![](images/prototype.jpg)
 
-Synviz is a system for in-person lip-reading. It takes video footage from a camera mounted on a pair of glasses, and passes that
-data to a backend that reads the lips of a subject in the video footage.
+Synviz is an IoT device that uses state of the art artificial intelligence to decode text from the movement of a speaker's mouth.
 
-## Final Product
-This is a fairly early prototype, but we believe the idea is worth pursuing. With better hardware,
-the whole pipeline would take less than a second, allowing for real-time subtitling. With a stronger on-board battery,
-5G connection speeds, and a computationally strong server, this prototype would turn into a viable product.
+## Inspiration
+There were two primary sources of inspiration. The first one was a paper published by University of Oxford researchers, who proposed a state of the art deep learning pipeline to extract spoken language from video. The paper can be found [here](http://www.robots.ox.ac.uk/~vgg/publications/2018/Afouras18b/afouras18b.pdf).
 
-### North Focals
-North is a company in Waterloo that is producing smart glasses with a built-in heads up display. We think this kind of tech would be an amazing paring with this technology. This would be ideal for this pipeline: We could attach a camera, record the video, process it, and then send it back to the glasses to provide real-time subtitling.
+The second source of inspiration is an existing product on the market, [Focals by North](https://www.bynorth.com/). Focals are smart glasses that aim to put the important parts of your life right in front of you through a projected heads up display. We thought it would be a great idea to build onto a platform like this through adding a camera and using artificial intelligence to gain valuable insights about what you see, which in our case, is deciphering speech from visual input.
 
-## Social Impact
-This hack can actually help in situations where communication is difficult. By far the best use case is when
-this technology is combined with automatic speech recognition. All-in-one solutions for real-time transcription and translation
-are becoming more and more viable as our technology progresses. We've come a long way from Google Glass. 
-This proof-of-concept is another key piece that would
-improve human computer interaction.
-
-## Quick Pipeline Overview
+## Pipeline Overview
 * The user presses the button on the glasses to start a recording
 * The user clicks the button again to stop recording
 * The data is passed to a Google Cloud Platform bucket as an mp4 file
 * Simultaneously, the glasses ping the Flask backend server to let it know there's something to be processed
 * The backend downloads the video file
-* The backend runs the video through a Haar Cascade Network to detect a face
+* The backend runs the video through a Haar Cascade classifier to detect a face
 * The video is cropped so that it tracks the mouth of the speaker
 * The cropped video is fed through a transformer network to get a transcript
-* The backend passes the transcript to the frontend through a socket
-* Simultaneously, the backend uploads the mp4 video to Google Cloud Platform
-* The frontend displays the transcript it got from the backend, and also displays the 
+* The backend passes the transcript and file URL to the frontend through a socket
+* The frontend displays the transcript it got from the backend, and also allows playback of the
 mp4 file found on Google Cloud Platform
 
 ## Use Cases
-This system has a few use cases:
-* individuals who are hard-of hearing or deaf
-* noisy environments where automatic speech recognition is impossible
-* combined with speech recognition for ultra-accurate, real-time transcripts.
-* language learners who want a transcript or translation
+* For individuals who are hard-of hearing or deaf
+* Noisy environments where automatic speech recognition is difficult
+* Combined with speech recognition for ultra-accurate, real-time transcripts
+* Language learners who want a transcript or translation
 
-## Inspiration
-We were inspired to do this hack from a really interesting paper published by University of Oxford researchers.
-We present a use-case for their lip-reading Transformer network. The paper can be found with the following link:
-http://www.robots.ox.ac.uk/~vgg/publications/2018/Afouras18b/afouras18b.pdf
+## Social Impact
+This hack can help in situations where communication is difficult. One of the most promising use cases is when
+this technology is combined with automatic speech recognition. All-in-one solutions for real-time transcription and translation
+are becoming more viable as our technology progresses.
+This proof-of-concept is another key piece that would
+improve human computer interaction.
+
+## Next Steps
+With stronger on-board battery, 5G network connection, and a computationally stronger compute server, we believe it will be possible to achieve near real-time transcription from a video feed that can be implemented on an existing platform like North's Focals to deliver a promising business appeal.
 
 ## The Team
 ![](images/team_photo.jpg)
