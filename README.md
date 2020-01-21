@@ -22,6 +22,7 @@ The second source of inspiration is an existing product on the market, [Focals b
 * The cropped video is fed through a transformer network to get a transcript
 * The backend passes the transcript and file URL to the frontend through a socket
 * The frontend displays the transcript it got from the backend, and also allows playback of the mp4 file found on Google Cloud Platform
+
 ![](images/frontend.jpg)
 
 ## Use Cases
